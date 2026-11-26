@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizador Analizador Sintáctico Predictivo LL(1) — Vice Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Yellowtail&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Escenario Ambiental GTA VI / Vice City / Leonida -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="vice-sky"></div>
+    <div class="ambient-orb ambient-orb--sunset"></div>
+    <div class="ambient-orb ambient-orb--pink"></div>
+    <div class="ambient-orb ambient-orb--cyan"></div>
+    <div class="ambient-orb ambient-orb--purple"></div>
+
+    <!-- Sol tropical atardecer estilo póster GTA VI -->
+    <div class="vice-sun">
+      <div class="vice-sun__disc"></div>
+      <div class="vice-sun__slices"></div>
+    </div>
+
+    <!-- Silueta de palmeras mecidas por la brisa (izquierda y derecha) -->
+    <svg class="palm-silhouette palm-silhouette--left" viewBox="0 0 420 560" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMax meet">
+      <defs>
+        <linearGradient id="palmGradLeft" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#190c2e" stop-opacity="0.92"/>
+          <stop offset="55%" stop-color="#0d071b" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#080412" stop-opacity="0.98"/>
+        </linearGradient>
+      </defs>
+      <!-- Tronco principal -->
+      <path d="M58 560 C72 455, 102 355, 168 232 L183 238 C124 358, 98 456, 86 560 Z" fill="url(#palmGradLeft)"/>
+      <!-- Segundo tronco más bajo -->
+      <path d="M-8 560 C12 480, 42 415, 92 332 L104 338 C58 418, 34 485, 16 560 Z" fill="url(#palmGradLeft)" opacity="0.82"/>
+      <!-- Frondas palmera principal -->
+      <g class="palm-crown palm-crown--main" transform="translate(174 234)">
+        <path d="M0 0 C-48 -42, -118 -46, -172 -12 C-122 -24, -64 -18, -10 10 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C-36 -62, -96 -96, -158 -84 C-102 -74, -52 -46, -6 6 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C-10 -74, -46 -134, -98 -164 C-58 -122, -26 -68, 2 -2 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C22 -72, 74 -128, 144 -144 C86 -108, 42 -58, 8 4 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C56 -52, 134 -68, 206 -42 C142 -44, 76 -26, 12 10 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C68 -16, 144 4, 196 58 C138 26, 72 14, 10 16 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C32 24, 68 72, 82 132 C54 84, 24 46, -4 16 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C-36 18, -84 54, -114 108 C-76 68, -38 36, -6 14 Z" fill="url(#palmGradLeft)"/>
+      </g>
+      <!-- Frondas segunda palmera -->
+      <g class="palm-crown palm-crown--sub" transform="translate(96 334)">
+        <path d="M0 0 C-38 -30, -90 -32, -132 -6 C-92 -14, -46 -10, -6 8 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C-18 -54, -56 -92, -102 -104 C-64 -78, -32 -44, 0 4 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C28 -52, 82 -82, 136 -74 C86 -58, 40 -30, 8 6 Z" fill="url(#palmGradLeft)"/>
+        <path d="M0 0 C54 -14, 112 6, 148 48 C102 22, 52 12, 8 14 Z" fill="url(#palmGradLeft)"/>
+      </g>
+    </svg>
+
+    <svg class="palm-silhouette palm-silhouette--right" viewBox="0 0 420 560" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax meet">
+      <defs>
+        <linearGradient id="palmGradRight" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#190c2e" stop-opacity="0.92"/>
+          <stop offset="55%" stop-color="#0d071b" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#080412" stop-opacity="0.98"/>
+        </linearGradient>
+      </defs>
+      <!-- Tronco principal derecho -->
+      <path d="M364 560 C348 450, 314 345, 246 218 L231 224 C292 348, 322 452, 336 560 Z" fill="url(#palmGradRight)"/>
+      <!-- Frondas palmera derecha -->
+      <g class="palm-crown palm-crown--right" transform="translate(240 222)">
+        <path d="M0 0 C48 -42, 118 -46, 172 -12 C122 -24, 64 -18, 10 10 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C36 -62, 96 -96, 158 -84 C102 -74, 52 -46, 6 6 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C10 -74, 46 -134, 98 -164 C58 -122, 26 -68, -2 -2 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C-24 -74, -80 -130, -152 -142 C-92 -106, -46 -56, -8 4 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C-60 -50, -140 -66, -214 -36 C-148 -40, -80 -22, -12 10 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C-68 -12, -142 12, -192 66 C-136 32, -72 18, -10 16 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C-30 28, -64 76, -78 136 C-50 86, -22 48, 4 16 Z" fill="url(#palmGradRight)"/>
+        <path d="M0 0 C38 18, 86 54, 116 108 C78 68, 40 36, 6 14 Z" fill="url(#palmGradRight)"/>
+      </g>
+    </svg>
+
+    <!-- Skyline Art Decó de Vice Beach / Ocean Drive -->
+    <svg class="vice-skyline" viewBox="0 0 1440 220" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="skylineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22103f" stop-opacity="0.72"/>
+          <stop offset="100%" stop-color="#080412" stop-opacity="0.98"/>
+        </linearGradient>
+      </defs>
+      <path d="M0 220 L0 164 L44 164 L44 128 L76 128 L76 148 L112 148 L112 96 L132 82 L152 96 L152 152 L198 152 L198 118 L244 118 L244 142 L286 142 L286 76 L316 76 L316 58 L328 58 L328 76 L354 76 L354 146 L402 146 L402 106 L456 106 L456 154 L520 154 L520 124 L564 124 L564 164 L640 164 L640 138 L690 138 L690 166 L768 166 L768 122 L816 122 L816 152 L882 152 L882 92 L914 92 L914 70 L934 70 L934 92 L962 92 L962 146 L1018 146 L1018 110 L1068 110 L1068 140 L1116 140 L1116 84 L1158 84 L1158 134 L1214 134 L1214 68 L1248 52 L1282 68 L1282 148 L1338 148 L1338 116 L1392 116 L1392 158 L1440 158 L1440 220 Z" fill="url(#skylineGrad)"/>
+      <!-- Acentos de ventanas neón en torres Art Decó -->
+      <g opacity="0.5">
+        <rect x="128" y="104" width="8" height="24" rx="1" fill="#00f0ff"/>
+        <rect x="318" y="88" width="6" height="44" rx="1" fill="#ff2a85"/>
+        <rect x="330" y="96" width="6" height="36" rx="1" fill="#ffb56b"/>
+        <rect x="918" y="102" width="12" height="4" rx="1" fill="#00f0ff"/>
+        <rect x="918" y="114" width="12" height="4" rx="1" fill="#ff2a85"/>
+        <rect x="1132" y="98" width="10" height="28" rx="1" fill="#ffb56b"/>
+        <rect x="1244" y="78" width="8" height="46" rx="1" fill="#00f0ff"/>
+      </g>
+    </svg>
+
+    <!-- Rejilla perspectiva neón Vice City -->
+    <div class="vice-perspective-grid"></div>
+    <div class="ambient-grid"></div>
+    <!-- Textura cinemática sutil estilo póster Rockstar -->
+    <div class="vice-grain"></div>
+  </div>
+
+  <div class="app-shell">
+    <!-- Barra superior HUD estilo GTA VI / Leonida -->
+    <div class="gta-hud-bar" role="status" aria-label="Telemetría del analizador">
+      <div class="gta-hud-brand">
+        <span class="hud-live-dot" aria-hidden="true"></span>
+        <span class="hud-station">LEONIDA OS</span>
+        <span class="hud-divider">/</span>
+        <span class="hud-subtitle-code">VICE SYNTAX ENGINE v6.0</span>
+      </div>
+
+      <div class="gta-hud-telemetry">
+        <div class="hud-stat">
+          <span class="hud-stat__label">GRAMÁTICA</span>
+          <span id="hud-grammar-state" class="hud-stat__value hud-stat__value--ok">LL(1) OK</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-stat__label">PASOS</span>
+          <span id="hud-steps-stat" class="hud-stat__value">00</span>
+        </div>
+        <div class="hud-wanted" id="hud-wanted-wrap" title="Nivel de alerta sintáctica (estrellas GTA)">
+          <span class="hud-wanted__label">ALERTA</span>
+          <div id="hud-wanted-stars" class="wanted-stars" aria-label="Nivel de alerta 0 de 5 estrellas">
+            <span class="wanted-star" aria-hidden="true">★</span>
+            <span class="wanted-star" aria-hidden="true">★</span>
+            <span class="wanted-star" aria-hidden="true">★</span>
+            <span class="wanted-star" aria-hidden="true">★</span>
+            <span class="wanted-star" aria-hidden="true">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Encabezado principal estilo logo oficial GTA VI -->
+    <header class="hero-header">
+      <div class="hero-badge">
+        <span class="hero-badge__dot" aria-hidden="true"></span>
+        WELCOME TO LEONIDA · COMPILADORES · ANÁLISIS DESCENDENTE
+      </div>
+
+      <div class="gta-logo-lockup">
+        <span class="gta-logo-roman" aria-hidden="true">VI</span>
+        <div class="gta-logo-foreground">
+          <span class="gta-script-kicker">Vice City Edition</span>
+          <h1 class="hero-title">
+            <span class="hero-title__main">ANALIZADOR PREDICTIVO</span>
+            <span class="hero-title__accent">LL(1)</span>
+          </h1>
+        </div>
+      </div>
+
+      <p class="hero-subtitle">
+        Define una gramática libre de contexto, calcula sus conjuntos FIRST y FOLLOW, construye la matriz predictiva y simula el análisis de cadenas paso a paso bajo el neón de Vice City.
+      </p>
+
+      <div class="vice-horizon-bar" aria-hidden="true">
+        <span class="vice-horizon-bar__wing"></span>
+        <span class="vice-horizon-bar__tag">OCEAN DRIVE · SYNTAX LAB</span>
+        <span class="vice-horizon-bar__wing"></span>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- SECCIÓN 1: Gramática y Análisis Léxico -->
+      <section class="grid-two-col">
+        <!-- Entrada de Gramática -->
+        <article class="glass-card" aria-labelledby="heading-grammar">
+          <div class="card-header">
+            <h2 id="heading-grammar" class="card-title">
+              <span class="step-pill">01</span> Gramática de Entrada
+            </h2>
+            <div class="preset-selector" role="group" aria-label="Ejemplos precargados">
+              <button type="button" class="btn-preset is-active" data-preset="expressions">
+                Ejemplo 1: Expresiones
+              </button>
+              <button type="button" class="btn-preset" data-preset="ab">
+                Ejemplo 2: Cadenas a y b
+              </button>
+            </div>
+          </div>
+
+          <div class="grammar-input-group">
+            <label for="grammar-input" class="field-label">
+              Producciones <span class="hint-inline">(usa <code>-&gt;</code> o <code>→</code>, separador <code>|</code>, y <code>ε</code> o <code>epsilon</code>)</span>
+            </label>
+            <textarea
+              id="grammar-input"
+              class="code-textarea"
+              rows="6"
+              spellcheck="false"
+              placeholder="E -> T E'&#10;E' -> + T E' | ε"
+            ></textarea>
+          </div>
+
+          <div id="grammar-error" class="inline-alert inline-alert--error hidden" role="alert"></div>
+
+          <div class="card-actions">
+            <button type="button" id="btn-build-grammar" class="btn btn--primary">
+              <span>Construir Analizador LL(1)</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Análisis Léxico de la Gramática -->
+        <article class="glass-card" aria-labelledby="heading-lexical">
+          <div class="card-header">
+            <h2 id="heading-lexical" class="card-title">
+              <span class="step-pill">02</span> Análisis Léxico de la Gramática
+            </h2>
+            <span id="ll1-status-pill" class="status-pill status-pill--valid">LL(1) Válida</span>
+          </div>
+
+          <div class="lexical-groups">
+            <div class="symbol-block">
+              <div class="symbol-block__header">
+                <span class="symbol-block__title">No Terminales (V<sub>N</sub>)</span>
+                <span id="nt-count" class="count-chip">0</span>
+              </div>
+              <div id="non-terminals-list" class="badge-list" aria-live="polite"></div>
+            </div>
+
+            <div class="symbol-block">
+              <div class="symbol-block__header">
+                <span class="symbol-block__title">Terminales (V<sub>T</sub>)</span>
+                <span id="t-count" class="count-chip">0</span>
+              </div>
+              <div id="terminals-list" class="badge-list" aria-live="polite"></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- SECCIÓN 2: Conjuntos FIRST y FOLLOW -->
+      <section class="grid-two-col">
+        <article class="glass-card" aria-labelledby="heading-first">
+          <div class="card-header">
+            <h2 id="heading-first" class="card-title">
+              <span class="step-pill">03</span> Conjuntos FIRST
+            </h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No Terminal</th>
+                  <th>FIRST(X)</th>
+                </tr>
+              </thead>
+              <tbody id="first-table-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="glass-card" aria-labelledby="heading-follow">
+          <div class="card-header">
+            <h2 id="heading-follow" class="card-title">
+              <span class="step-pill">04</span> Conjuntos FOLLOW
+            </h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No Terminal</th>
+                  <th>FOLLOW(X)</th>
+                </tr>
+              </thead>
+              <tbody id="follow-table-body"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- SECCIÓN 3: Matriz Predictiva LL(1) y Conflictos -->
+      <section class="glass-card" id="matrix-section" aria-labelledby="heading-matrix">
+        <div class="card-header">
+          <h2 id="heading-matrix" class="card-title">
+            <span class="step-pill">05</span> Matriz Predictiva LL(1)
+          </h2>
+          <div id="matrix-active-indicator" class="active-cell-pill hidden" aria-live="polite"></div>
+        </div>
+
+        <!-- Aviso de conflictos LL(1) -->
+        <div id="conflict-banner" class="conflict-banner hidden" role="alert">
+          <div class="conflict-banner__icon" aria-hidden="true">!</div>
+          <div class="conflict-banner__body">
+            <h3 class="conflict-banner__title">Conflictos detectados: la gramática NO es LL(1)</h3>
+            <ul id="conflict-list" class="conflict-list"></ul>
+          </div>
+        </div>
+
+        <div class="table-wrapper table-wrapper--matrix">
+          <table class="data-table matrix-table" id="parsing-matrix">
+            <thead id="matrix-head"></thead>
+            <tbody id="matrix-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 4: Evaluación de Cadenas y Simulación Paso a Paso -->
+      <section class="glass-card" aria-labelledby="heading-simulator">
+        <div class="card-header">
+          <h2 id="heading-simulator" class="card-title">
+            <span class="step-pill">06</span> Evaluación de Cadenas y Simulación
+          </h2>
+          <span id="sim-step-counter" class="step-counter">Paso 0</span>
+        </div>
+
+        <!-- Controles de cadena y botones de prueba -->
+        <div class="sim-controls-panel">
+          <div class="sim-input-row">
+            <div class="input-field-wrap">
+              <label for="test-string-input" class="field-label">Cadena de entrada</label>
+              <input
+                type="text"
+                id="test-string-input"
+                class="code-input"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Ej: id+id*id"
+              >
+            </div>
+
+            <div class="sim-buttons" role="group" aria-label="Controles de simulación">
+              <button type="button" id="btn-analyze-all" class="btn btn--primary">
+                Analizar Completo
+              </button>
+              <button type="button" id="btn-next-step" class="btn btn--cyan">
+                Siguiente Paso
+              </button>
+              <button type="button" id="btn-reset-sim" class="btn btn--ghost">
+                Reiniciar
+              </button>
+            </div>
+          </div>
+
+          <div id="suggested-strings-wrap" class="suggested-strings">
+            <span class="suggested-label">Cadenas de prueba:</span>
+            <div id="suggested-strings-list" class="suggested-chips"></div>
+          </div>
+
+          <!-- Cinta de tokens de entrada -->
+          <div class="token-tape-wrap">
+            <span class="token-tape-label">Entrada tokenizada:</span>
+            <div id="token-tape" class="token-tape" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <!-- Resultado Final (ACEPTADA / RECHAZADA con estilo GTA MISSION PASSED / WASTED) -->
+        <div id="verdict-banner" class="verdict-banner hidden" role="status" aria-live="assertive">
+          <div id="verdict-icon" class="verdict-banner__icon" aria-hidden="true"></div>
+          <div class="verdict-banner__content">
+            <div class="verdict-banner__head">
+              <div id="verdict-title" class="verdict-banner__title"></div>
+              <span id="verdict-gta-stamp" class="verdict-gta-stamp"></span>
+            </div>
+            <p id="verdict-detail" class="verdict-banner__detail"></p>
+          </div>
+        </div>
+
+        <!-- Visualización interna: Pila Visual + Tabla de Traza -->
+        <div class="sim-workspace">
+          <!-- Pila visual -->
+          <div class="stack-panel">
+            <div class="subpanel-header">
+              <h3 class="subpanel-title">Pila Sintáctica</h3>
+              <span class="stack-top-tag">TOPE ↑</span>
+            </div>
+            <div class="stack-viewport">
+              <div id="stack-visual" class="stack-column" aria-live="polite"></div>
+              <div class="stack-base-label">FONDO DE PILA</div>
+            </div>
+          </div>
+
+          <!-- Tabla de traza (3 columnas exactas) -->
+          <div class="trace-panel">
+            <div class="subpanel-header">
+              <h3 class="subpanel-title">Tabla de Traza (Procedimiento)</h3>
+            </div>
+            <div class="table-wrapper table-wrapper--trace" id="trace-scroll-container">
+              <table class="data-table trace-table">
+                <thead>
+                  <tr>
+                    <th>Pila</th>
+                    <th>Entrada Pendiente</th>
+                    <th>Acción / Regla Aplicada</th>
+                  </tr>
+                </thead>
+                <tbody id="trace-table-body">
+                  <tr class="trace-empty-row">
+                    <td colspan="3">Presiona "Siguiente Paso" o "Analizar Completo" para iniciar la simulación.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Pie de página estilo postal de Vice City -->
+    <footer class="vice-footer">
+      <div class="vice-footer__line"></div>
+      <div class="vice-footer__content">
+        <span class="vice-footer__script">Greetings from Vice City</span>
+        <span class="vice-footer__meta">LENGUAJES Y AUTÓMATAS · ANALIZADOR PREDICTIVO LL(1) · ESTÉTICA GTA VI</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
